@@ -2,7 +2,7 @@ import datetime
 import traceback
 
 name = "SMAC3"
-package_name = "smac"
+package_name = "smac_release_test"
 author = (
     "\tMarius Lindauer, Katharina Eggensperger, Matthias Feurer, André Biedenkapp, "
     "Difan Deng,\n\tCarolin Benjamins, Tim Ruhkopf, René Sass and Frank Hutter"
@@ -20,7 +20,7 @@ copyright = (
     "Matthias Feurer, André Biedenkapp, Difan Deng, Carolin Benjamins, Tim Ruhkopf, René Sass "
     "and Frank Hutter"
 )
-version = "2.4.0"
+version = "1.0.0"
 
 
 try:
