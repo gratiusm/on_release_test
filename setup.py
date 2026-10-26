@@ -53,6 +53,7 @@ extras_require = {
         "mkdocs-glightbox",
         "mkdocs-glossary-plugin",
         "mkdocstrings[python]",
+        "pymdown-extensions<12.2",
         "markdown-exec[ansi]",
         "mike>=2.2.0",
         "pillow",
