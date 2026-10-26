@@ -81,16 +81,25 @@ jobs:
   #      env:
   #        UV_PUBLISH_TOKEN: ${{ secrets.PYPI_TOKEN }}
 
-
   deploy-docs:
     needs: publish
     runs-on: ubuntu-latest
+    permissions:
+      contents: write
     steps:
       - name: Check out
         uses: actions/checkout@v7
 
       - name: Set up the environment
         uses: ./.github/actions/setup-python-env
+        with:
+          extra-packages: "pymdown-extensions<12.2"
+
+      - name: Configure git user
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
 
       - name: Deploy documentation
         run: uv run properdocs gh-deploy -f mkdocs.yaml --force
+
