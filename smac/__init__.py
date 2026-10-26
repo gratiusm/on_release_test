@@ -1,7 +1,7 @@
 import datetime
 import traceback
 
-name = "SMAC3"
+name = "SMAC3_release_test"
 package_name = "smac_release_test"
 author = (
     "\tMarius Lindauer, Katharina Eggensperger, Matthias Feurer, André Biedenkapp, "
