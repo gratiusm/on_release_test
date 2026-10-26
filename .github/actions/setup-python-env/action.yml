@@ -25,9 +25,12 @@ runs:
 
     - name: Install uv
       uses: astral-sh/setup-uv@v10.3.2
-
+      
     - name: Install dependencies
       shell: bash
+      env:
+        EXTRAS: ${{ inputs.extras }}
+        EXTRA_PACKAGES: ${{ inputs.extra-packages }}
       run: |
         uv venv --python "${{ inputs.python-version }}"
-        uv pip install -e ".[${{ inputs.extras }}]" ${{ inputs.extra-packages }}
+        uv pip install -e ".[$EXTRAS]" $EXTRA_PACKAGES
