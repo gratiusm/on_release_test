@@ -1,3 +1,46 @@
+# 2.4.9
+## Breaking
+- Drop support for Python 3.9 (minimum is now Python 3.10).
+
+## Improvements
+- Add a `WandbRunner` for logging SMAC trials to Weights & Biases
+- `tell()` raises an error if no seed is passed and warns if the seed is not used by the intensifier, since such trials can not be matched, e.g., by Successive Halving/Hyperband (#1148)
+- Early diagnostics on the initial design evaluations: SMAC now reports when all configurations
+  failed, when some of them failed, or when all of them perform identically, and can abort the run
+  when the initial design carries no feedback signal for the surrogate model. Controlled via
+  `Scenario.initial_design_diagnostics` (`"off"` | `"warn"` (default) | `"abort"`) (#1320)
+- Include a new multi-objective method based on hypervolume
+- Added configurable `warn_mode` for ask-and-tell budget exhaustion behavior (#1197)
+- Batch model predictions when selecting the best predicted configuration.
+- Add `HPIRandomSearch`, an acquisition maximizer that dynamically restricts the configuration space to the
+  hyperparameters estimated to be most important (via HyperSHAP) for the current scalarization. Combined with
+  `ParEGO`, this implements HPI-ParEGO. Requires the optional `hypershap` dependency (`pip install smac[hpi]`).
+  Also works for single-objective optimization.
+- Add `HPIFacade`, which sets up HPI-ParEGO (`HPIRandomSearch`, `ParEGO` with `reweigh=5`, retraining every 2 configs).
+
+## Dependencies
+- Add Weights & Biases as an optional dependency via `smac[wandb]`
+
+## Examples
+- Add an example for using SMAC with Weights & Biases
+- An example on the new multi-objective method
+- An example on HPI-ParEGO
+- An example on HPIRandomSearch for single objective optimization
+
+## Bugfixes
+- Resource limits (`trial_walltime_limit`, `trial_memory_limit`) now also work with user-provided dask clients
+  whose workers are started by a nanny. Previously every trial crashed silently, because pynisher cannot start its
+  child process in a daemonic worker; SMAC now clears the daemon flag of the worker process before running such a
+  trial. Added tests for pynisher within dask workers (#1031)
+- Remove the dead `FirstRunCrashedException` safeguard in `SMBO._add_results`: its condition
+  (`runhistory.finished == 0`) was checked *after* `tell()` had already incremented that counter and
+  could therefore never hold. The unused `FirstRunCrashedException` and
+  `TargetAlgorithmAbortException` classes were removed along with it; the initial design diagnostics
+  replace them (#1320)
+- Fix crash in `update_incumbents` and `_cut_incumbents` for multi-objective multi-fidelity runs (e.g. ParEGO with Hyperband) when incumbents share no instance-seed-budget keys (#1369)
+- RunHistory._add skipped a budget when it equaled the instance or seed. A budget of 3 with seed=3 was never recorded in the budget list. Overwriting a trial also appended its budget a second time. (#1363)
+and then release
+
 # 2.4.1
 ## Improvements
 - Early diagnostics on the initial design evaluations: SMAC now reports when all configurations
