@@ -1,7 +1,7 @@
 # Installation
 ## Requirements
 
-SMAC is written in python3 and therefore requires an environment with python>=3.9.
+SMAC is written in python3 and therefore requires an environment with python>=3.10.
 
 !!! info 
 
