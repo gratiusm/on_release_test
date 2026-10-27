@@ -35,7 +35,8 @@ jobs:
 
       - name: Update project version
         run: |
-          sed -i "s/^version = \".*\"/version = \"$RELEASE_VERSION\"/" pyproject.toml
+          sed -i "s/^version = \".*\"/version = \"${RELEASE_VERSION#v}\"/" pyproject.toml
+          grep "^version" pyproject.toml
         env:
           RELEASE_VERSION: ${{ steps.export-tag.outputs.tag }}
         if: ${{ github.event_name == 'release' }}
@@ -54,6 +55,11 @@ jobs:
     steps:
       - name: Check out
         uses: actions/checkout@v7
+
+      - name: Download updated pyproject.toml
+        uses: actions/download-artifact@v7
+        with:
+          name: pyproject-toml
 
       - name: Set up the environment
         uses: actions/setup-python@v7
