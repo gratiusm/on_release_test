@@ -21,7 +21,8 @@ copyright = (
     "and Frank Hutter"
 )
 try:
-    from importlib.metadata import PackageNotFoundError, version as _get_version
+    from importlib.metadata import PackageNotFoundError
+    from importlib.metadata import version as _get_version
 
     version = _get_version(package_name)
 except PackageNotFoundError:
