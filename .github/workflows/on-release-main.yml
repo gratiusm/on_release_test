@@ -56,19 +56,14 @@ jobs:
 
       - name: Build dist
         run: |
-          python setup.py sdist
+          pip install build
+          python -m build
 
       - name: Twine check
         run: |
           pip install twine
-          last_dist=$(ls -t dist/*.tar.gz | head -n 1)
-          twine_output=`twine check "$last_dist"`
-          if [[ "$twine_output" != "Checking $last_dist: PASSED" ]]
-          then
-            echo $twine_output
-          else
-            pip install $last_dist
-          fi
+          twine check --strict dist/*
+          pip install dist/*.whl
 
       - name: Publish package
         run: python -m twine upload --repository testpypi dist/*
@@ -92,6 +87,10 @@ jobs:
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
 
+      - name: Fetch gh-pages branch
+        run: git fetch origin gh-pages --depth=1 || true
+
       - name: Deploy documentation
-        run: uv run properdocs gh-deploy -f mkdocs.yaml --force
+        run: uv run mike deploy -F mkdocs.yaml --push --update-aliases "$GITHUB_REF_NAME" latest
+
 
