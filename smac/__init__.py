@@ -20,7 +20,12 @@ copyright = (
     "Matthias Feurer, André Biedenkapp, Difan Deng, Carolin Benjamins, Tim Ruhkopf, René Sass "
     "and Frank Hutter"
 )
+try:
+    from importlib.metadata import PackageNotFoundError, version as _get_version
 
+    version = _get_version(package_name)
+except PackageNotFoundError:
+    version = "unknown"
 
 try:
     from smac.callback.callback import Callback
